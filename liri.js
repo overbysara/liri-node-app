@@ -1,12 +1,15 @@
 //variables for app functionality
 require("dotenv").config();
 var keys = require("./keys.js");
-var spotify = new Spotify(keys.spotify);
 var fs = require("fs");
+var keys = require("./keys.js");
 var Spotify = require("node-spotify-api");
+var spotify = new Spotify(keys.spotify);
 var moment = require("moment");
 var axios = require("axios");
 var request = require("request");
+
+
 var liriRequest = process.argv[2]
 var userInput = process.argv.slice(3).join(" ");
 var omdbKey = "d6b764ec";
@@ -30,15 +33,14 @@ switch(liriRequest) {
          break;
  
 // instructions
-    default: console.log("**********" + "INSTRUCTIONS FOR USE" + "**********" + "type any of the following commands after node app.js to start the application: " + "\n" +
+    default: console.log("********************" + "\nINSTRUCTIONS FOR USE" + "\n********************" + "\nType 'node liri' followed by any of these commands to start the application: " + "\n" +
         "movie-this" + " {Enter Movie Name}" + "\n" +
         "spotify-this-song" + " {Enter Artist Name}" + '\n' +
         "concert-this" + " {Enter Name of Band}" + "\n" +
         "do-what-it-says" + " {Leave This Blank}" + "\n"
         );
         break;
- }
- 
+ }    
  
 //   * `movie-this` --- `node liri.js movie-this '<movie name here>'`
 //    * This will output the following information to your terminal/bash window:
@@ -57,35 +59,40 @@ switch(liriRequest) {
 //      * It's on Netflix!
 //    * You'll use the `axios` package to retrieve data from the OMDB API. Like all of the in-class activities, the OMDB API requires an API key. You may use `trilogy`.
 
- function movieRequest() {
-     if (!userInput) {
-         userInput = "Mr nobody";
-     }
-    var movieURL = ("http://www.omdbapi.com/?apikey=" + omdbKey + "&t=" + userInput);
-     
-     axios.get(movieURL)
-          .then(function(response) {
-             console.log("\n");
-             console.log("********** SEARCHING FOR " + userInput + " **********");
-             console.log("\n");
-                 var results = 
-                 "********************" +
-                 "\n" +
-                 "\n - Title: " + response.data.Title +
-                 "\n - Year Released: " + response.data.Year +
-                 "\n - IMDB Rating: " + response.data.imdbRating +
-                 "\n - Rotten Tomatoes Score: " + response.data.Ratings[1].Value +
-                 "\n - Country of Origin: " + response.data.Country +
-                 "\n - Language: " + response.data.Language +
-                 "\n - Plot: " + response.data.Plot +
-                 "\n - Cast Members: " + response.data.Actors + 
-                 "\n" + 
-                 "\n**********************" +
-                 "\n";
-                 console.log(results);
-         });
- }
-  
+
+
+
+function movieRequest() {
+    if (!userInput) {
+        userInput = "high fidelity";
+    }
+   // user input is worked in to the axios api call
+   var movieURL = ("http://www.omdbapi.com/?apikey=" + omdbKey + "&t=" + userInput);
+    
+    axios.get(movieURL)
+         .then(function(response) {
+            console.log("\n");
+            console.log("********** SEARCHING FOR " + userInput + " **********");
+            console.log("\n");
+            // limit search to 3 movies in case of overlap
+                var results = 
+                "********************" +
+                "\n" +
+                "\n - Title: " + response.data.Title +
+                "\n - Year Released: " + response.data.Year +
+                "\n - IMDB Rating: " + response.data.imdbRating +
+                "\n - Rotten Tomatoes Score: " + response.data.Ratings[1].Value +
+                "\n - Country of Origin: " + response.data.Country +
+                "\n - Language: " + response.data.Language +
+                "\n - Plot: " + response.data.Plot +
+                "\n - Cast Members: " + response.data.Actors + 
+                "\n" + 
+                "\n**********************" +
+                "\n";
+                console.log(results);
+        });
+}
+
 //   * `spotify-this-song` --- `node liri.js spotify-this-song '<song name here>'`
 //   This will show the following information about the song in your terminal/bash window
 //      * Artist(s)
@@ -100,29 +107,29 @@ switch(liriRequest) {
 //    * Step Three: Once logged in, navigate to <https://developer.spotify.com/my-applications/#!/applications/create> to register a new application to be used with the Spotify API. You can fill in whatever you'd like for these fields. When finished, click the "complete" button.
 //    * Step Four: On the next screen, scroll down to where you see your client id and client secret. Copy these values down somewhere, you'll need them to use the Spotify API and the [node-spotify-api package](https://www.npmjs.com/package/node-spotify-api).
  
- function spotifyRequest() {
-     if (!userInput) {
-         userInput = "The Sign";
-     }
-     spotify
-         .search({type: "track", query: userInput})
-             .then(function(response) {
-                 console.log("  ");
-                 console.log("********** SEARCHING FOR " + userInput + " *********" );
-                 console.log("  ");
-                 // limit search results to 3 songs
-                 for (var i = 0; i < 3; i++) {
-                     var results = 
-                     "********************" +
-                     "\nArtists: " + response.tracks.items[i].artists[0].name +
-                     "\nSong Name: " + response.tracks.items[i].name +
-                     "\nAlbum Name: " + response.tracks.items[i].album.name +
-                     "\nLink To Preview: " + response.tracks.items[i].preview_url;
- 
-                     console.log(results);
-                 }
-             })
- }
+function spotifyRequest() {
+    if (!userInput) {
+        userInput = "paul simon";
+    }
+    spotify
+        .search({type: "track", query: userInput})
+            .then(function(response) {
+                console.log("  ");
+                console.log("********** SEARCHING FOR " + userInput + " *********" );
+                console.log("  ");
+                // limit search results to 3 songs
+                for (var i = 0; i < 3; i++) {
+                    var results = 
+                    "********************" +
+                    "\nArtists: " + response.tracks.items[i].artists[0].name +
+                    "\nSong Name: " + response.tracks.items[i].name +
+                    "\nAlbum Name: " + response.tracks.items[i].album.name +
+                    "\nLink To Preview: " + response.tracks.items[i].preview_url;
+
+                    console.log(results);
+                }
+            })
+};
  
 //   * `concert-this` --- `node liri.js concert-this <artist/band name here>`
 //   This will search the Bands in Town Artist Events API (`"https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"`) for an artist and render the following information about each event to the terminal:
@@ -142,8 +149,8 @@ switch(liriRequest) {
              console.log("This concert is being held at: " + concertData[0].venue.name);
              console.log("The venue is located in: " + (concertData[0].venue.city) + ", " +  concertData[0].venue.region);
              console.log("This event is happening on " + concertData[0].datetime);
-         })
- }
+         });
+ };
 
  //   * `do-what-it-says` --- `node liri.js do-what-it-says`
 //    * Using the `fs` Node package, LIRI will take the text inside of random.txt and then use it to call one of LIRI's commands.
@@ -164,12 +171,8 @@ switch(liriRequest) {
                  userInput = dataArr[1];
                  //then run spotify function
                  spotifyRequest();
-              }
-         }
+              };
+         };
          
-     })
-  }
-  
-
-
-
+     });
+  };
