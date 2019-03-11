@@ -6,7 +6,8 @@ LIRI is like iPhone's SIRI. However, while SIRI is a Speech Interpretation and R
    
 * Screenshots of the user flow:
 
+- Start application: https://github.com/overbysara/liri-node-app/blob/master/Images/StartApplication.png
 - Spotify: 
-- Bands in Town: 
-- OMDB: 
+- Bands in Town: https://github.com/overbysara/liri-node-app/blob/master/Images/ConcertThis.png
+- OMDB: https://github.com/overbysara/liri-node-app/blob/master/Images/MovieThis.png
 
